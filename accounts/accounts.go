@@ -19,15 +19,87 @@ package accounts
 
 import (
 	"fmt"
+	//"log"
 	"math/big"
+	//"net/rpc"
 
 	ethereum "github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/event"
+	//"github.com/harmony-one/harmony/accounts/abi/bind"
 	"github.com/harmony-one/harmony/core/types"
+	//"github.com/stripe/stripe-go/v74"
+	//"github.com/stripe/stripe-go/v74/paymentintent"
 	"golang.org/x/crypto/sha3"
 )
 
+/*
+type AccountService struct {
+	stripeAPIKey   string
+	tokenContract  *USDToken
+	blockchainConn *rpc.Client
+	ownerAuth      *bind.TransactOpts
+}
+
+// USDToken is the ABI-bound token contract (assumes you've generated Go bindings for it)
+type USDToken interface {
+	Mint(*bind.TransactOpts, common.Address, *big.Int) (*types.Transaction, error)
+}
+
+// NewAccountService initializes the service with Stripe API key and blockchain connection
+func NewAccountService(stripeAPIKey string, rpcURL string, tokenAddress common.Address, ownerAuth *bind.TransactOpts) (*AccountService, error) {
+	stripe.Key = stripeAPIKey
+
+	client, err := rpc.Dial(rpcURL)
+	if err != nil {
+		return nil, fmt.Errorf("failed to connect to blockchain: %v", err)
+	}
+
+	tokenContract, err := NewUSDToken(tokenAddress, client)
+	if err != nil {
+		return nil, fmt.Errorf("failed to load token contract: %v", err)
+	}
+
+	return &AccountService{
+		stripeAPIKey:   stripeAPIKey,
+		tokenContract:  tokenContract,
+		blockchainConn: client,
+		ownerAuth:      ownerAuth,
+	}, nil
+}
+
+// ProcessPayment creates a Stripe payment and issues tokens upon success
+func (s *AccountService) ProcessPayment(amountUSD float64, userAddress common.Address) error {
+	// Convert amount to cents for Stripe (e.g., $10.50 -> 1050)
+	amountCents := int64(amountUSD * 100)
+
+	// Create a payment intent
+	params := &stripe.PaymentIntentParams{
+		Amount:   stripe.Int64(amountCents),
+		Currency: stripe.String(string(stripe.CurrencyUSD)),
+	}
+	pi, err := paymentintent.New(params)
+	if err != nil {
+		return fmt.Errorf("failed to create Stripe payment intent: %v", err)
+	}
+
+	// Confirm payment and issue tokens
+	if pi.Status == stripe.PaymentIntentStatusSucceeded {
+		tokenAmount := big.NewInt(int64(amountUSD * 1000)) // assuming token has 3 decimals (0.001)
+
+		tx, err := s.tokenContract.Mint(s.ownerAuth, userAddress, tokenAmount)
+		if err != nil {
+			return fmt.Errorf("failed to mint tokens: %v", err)
+		}
+
+		log.Printf("Tokens minted successfully in transaction: %s", tx.Hash().Hex())
+	} else {
+		return fmt.Errorf("payment not completed, status: %v", pi.Status)
+	}
+
+	return nil
+}
+*/
 // Account represents an Ethereum account located at a specific location defined
 // by the optional URL field.
 type Account struct {

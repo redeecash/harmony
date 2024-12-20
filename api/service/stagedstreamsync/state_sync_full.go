@@ -51,10 +51,22 @@ const (
 	// and waste round trip times. If it's too high, we're capping responses and
 	// waste bandwidth.
 	//
-	// Deployed bytecodes are currently capped at 24KB, so the minimum request
-	// size should be maxRequestSize / 24K. Assuming that most contracts do not
+	/*
+	 * PRESSPAGE ENTERTAINMENT INC CHANGES:
+	 * -----------------------------------
+	 * 2024-10-30
+	 *
+	 * // Deployed bytecodes are currently capped at 24KB, so the minimum request
+	 * // size should be maxRequestSize / 24K. Assuming that most contracts do not
+	 * // come close to that, requesting 4x should be a good approximation.
+	 * maxCodeRequestCount = maxRequestSize / (24 * 1024) * 4
+	 */
+	// PRESSPAGE ENTERTAINMENT INC CHANGES:
+	// 2024-10-30
+	// Deployed bytecodes are currently capped at 50KB, so the minimum request
+	// size should be maxRequestSize / 50K. Assuming that most contracts do not
 	// come close to that, requesting 4x should be a good approximation.
-	maxCodeRequestCount = maxRequestSize / (24 * 1024) * 4
+	maxCodeRequestCount = maxRequestSize / (50 * 1024) * 4
 
 	// maxTrieRequestCount is the maximum number of trie node blobs to request in
 	// a single query. If this number is too low, we're not filling responses fully
